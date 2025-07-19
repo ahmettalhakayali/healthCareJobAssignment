@@ -47,13 +47,13 @@ docker-compose down
 
 ```bash
 # 1. Build the image
-docker build -t app-hospital-api .
+docker build -t gerimedica-hospital-api .
 
 # 2. Run the container
-docker run -d --name app-hospital-api -p 8080:8080 app-hospital-api
+docker run -d --name gerimedica-hospital-api -p 8080:8080 app-hospital-api
 
 # 3. Stop the container
-docker stop app-hospital-api
+docker stop gerimedica-hospital-api
 ```
 
 ### Using Helper Scripts
