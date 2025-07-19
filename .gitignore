@@ -1,0 +1,46 @@
+/target/
+/build/
+
+/out/
+/src/main/generated/
+
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+# Windows thumbnail db
+Thumbs.db
+
+# OSX files
+.DS_Store
+
+.ai
+.gradle
+build
+.idea
+*.iml
+*.iws
+*.ipr
+.classpath
+.project
+.settings
+target
+*.log
+*.tmp
+*.jar
+*.war
+*.ear
+out
+*.DS_Store
+*.swp
+*.swo
+.vscode/
+gradle/
