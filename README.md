@@ -50,7 +50,7 @@ docker-compose down
 docker build -t gerimedica-hospital-api .
 
 # 2. Run the container
-docker run -d --name gerimedica-hospital-api -p 8080:8080 app-hospital-api
+docker run -d --name gerimedica-hospital-api -p 8080:8080 gerimedica-hospital-api
 
 # 3. Stop the container
 docker stop gerimedica-hospital-api
