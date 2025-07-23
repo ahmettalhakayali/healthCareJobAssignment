@@ -135,12 +135,12 @@ public class HospitalService {
     public boolean deleteAppointmentsBySSN(String ssn) {
         Optional<Patient> patientOpt = findPatientBySSN(ssn);
         if (patientOpt.isPresent()) {
-            Patient patient = patientOpt.get();
-            appointmentRepo.deleteAll(patient.getAppointments());
+            List<Appointment> appointments = appointmentRepo.findByPatientSsn(ssn);
+            appointmentRepo.deleteAll(appointments);
             log.info("Deleted {} appointments for patient SSN: {}", 
-                patient.getAppointments().size(), ssn);
-            return true;
-        } else {
+            appointments.size(), ssn);
+        return true;
+    } else {
             log.warn("No patient found with SSN: {}", ssn);
             return false;
         }
