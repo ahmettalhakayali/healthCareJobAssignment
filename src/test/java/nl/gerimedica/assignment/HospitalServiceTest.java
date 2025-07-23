@@ -37,10 +37,8 @@ class HospitalServiceTest {
     void setUp() {
         // Create test data
         testPatient = new Patient("John Doe", "123-45-6789");
-        testPatient.setId(1L);
         
         testAppointment = new Appointment("Checkup", "2025-01-15", testPatient);
-        testAppointment.setId(1L);
     }
 
     @Test
@@ -52,7 +50,6 @@ class HospitalServiceTest {
         List<String> dates = Arrays.asList("2025-01-15");
 
         Patient newPatient = new Patient(patientName, ssn);
-        newPatient.setId(2L);
 
         when(patientRepository.findBySsn(ssn)).thenReturn(Optional.empty());
         when(patientRepository.save(any(Patient.class))).thenReturn(newPatient);
@@ -149,15 +146,17 @@ class HospitalServiceTest {
     void shouldDeleteAppointmentsWhenPatientExists() {
         // Given
         String ssn = "123-45-6789";
-        testPatient.setAppointments(Arrays.asList(testAppointment));
+        List<Appointment> appointments = Arrays.asList(testAppointment);
         when(patientRepository.findBySsn(ssn)).thenReturn(Optional.of(testPatient));
+        when(appointmentRepository.findByPatientSsn(ssn)).thenReturn(appointments);
 
         // When
         boolean result = hospitalService.deleteAppointmentsBySSN(ssn);
 
         // Then
         assertTrue(result);
-        verify(appointmentRepository).deleteAll(testPatient.getAppointments());
+        verify(appointmentRepository).findByPatientSsn(ssn);
+        verify(appointmentRepository).deleteAll(appointments);
     }
 
     @Test
@@ -179,10 +178,9 @@ class HospitalServiceTest {
         // Given
         String ssn = "123-45-6789";
         Appointment olderAppointment = new Appointment("Old", "2025-01-10", testPatient);
-        olderAppointment.setId(2L);
         testPatient.setAppointments(Arrays.asList(testAppointment, olderAppointment));
         
-        when(patientRepository.findBySsn(ssn)).thenReturn(Optional.of(testPatient));
+        when(patientRepository.findBySsnWithAppointments(ssn)).thenReturn(Optional.of(testPatient));
 
         // When
         Optional<AppointmentDto> result = hospitalService.findLatestAppointmentBySSN(ssn);
@@ -197,7 +195,7 @@ class HospitalServiceTest {
         // Given
         String ssn = "123-45-6789";
         testPatient.setAppointments(Arrays.asList());
-        when(patientRepository.findBySsn(ssn)).thenReturn(Optional.of(testPatient));
+        when(patientRepository.findBySsnWithAppointments(ssn)).thenReturn(Optional.of(testPatient));
 
         // When
         Optional<AppointmentDto> result = hospitalService.findLatestAppointmentBySSN(ssn);
@@ -205,4 +203,4 @@ class HospitalServiceTest {
         // Then
         assertFalse(result.isPresent());
     }
-} 
+}
